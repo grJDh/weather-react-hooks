@@ -14,9 +14,12 @@ const App = () => {
   const [weather, setWeather] = useState(weatherInitial);
 
   return (
-    <div className='flex flex-wrap w-100 justify-center'>
-      
-      {weather.map(thisDay => (<Card day={thisDay.day} minTemp={thisDay.minTemp} maxTemp={thisDay.maxTemp} weather={thisDay.weather}/>))}
+    <div>
+      <h1 className='tc font-mw f-subheadline lh-title normal'>Прогноз погоды</h1>
+
+      <div className='flex flex-wrap w-100 justify-center'>
+        {weather.map(thisDay => (<Card day={thisDay.day} minTemp={thisDay.minTemp} maxTemp={thisDay.maxTemp} weather={thisDay.weather}/>))}
+      </div>
     </div>
   );
 }
