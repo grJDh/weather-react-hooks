@@ -25,4 +25,4 @@ const App = () => {
 }
 
 export default App;
-// api.openweathermap.org/data/2.5/forecast?id={1500933}&appid={2c9dc6f2bedb657466b0cab93ce56dc6}
+// http://api.openweathermap.org/data/2.5/forecast?id=1500933&appid=2c9dc6f2bedb657466b0cab93ce56dc6
