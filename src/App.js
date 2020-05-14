@@ -4,7 +4,6 @@ import Card from './Card';
 import './css/Card.css';
 import './font/Merriweather-Regular.ttf';
 import './css/weather-icons.min.css';
-import TodayCard from './TodayCard';
 
 const App = () => {
 
