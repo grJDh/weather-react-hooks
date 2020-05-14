@@ -14,7 +14,7 @@ const App = () => {
   const [city, setCity] = useState('???');
 
   useEffect(() => {
-    fetch('http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=2c9dc6f2bedb657466b0cab93ce56dc6')
+    fetch('https://api.openweathermap.org/data/2.5/forecast?id=524901&appid=2c9dc6f2bedb657466b0cab93ce56dc6')
       .then(response => response.json())
       .then(weatherJSON => {
         setWeather(weatherJSON);
@@ -24,11 +24,10 @@ const App = () => {
   useEffect(() => {
     if (weather.city) {
       setCity(weather.city.name);
-      console.log(weather.list)
     }
   }, [weather]);
 
-  const now = new Date();
+  const timeNow = new Date();
 
   if (weather.list) {
     return (
@@ -37,7 +36,7 @@ const App = () => {
         <h3 className='tc f4 lh-copy'>{city}</h3>
 
         <div className='flex flex-wrap justify-center'>
-        {(now.getHours() > 12) && <Card day={now.getDay()} temp={Math.round(weather.list[0].main.temp)-272} weather={weather.list[0].weather[0].main} />}
+        {(Date().getHours() > 12) && <Card day={Date().getDay()} temp={Math.round(weather.list[0].main.temp)-272} weather={weather.list[0].weather[0].main} />}
 
           {weather.list.filter((day) => {
             const time = new Date(day.dt_txt);
