@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+
 import Card from './Card';
+import SearchBox from './SearchBox';
 
 import './css/Card.css';
 import './font/Merriweather-Regular.ttf';
@@ -12,13 +14,14 @@ const App = () => {
   const [weather, setWeather] = useState(weatherInitial);
 
   const [city, setCity] = useState('???');
+  const startCity = 'Moscow';
+
+  const [cityFound, setCityFound] = useState(true);
 
   useEffect(() => {
-    fetch('https://api.openweathermap.org/data/2.5/forecast?id=524901&appid=2c9dc6f2bedb657466b0cab93ce56dc6')
+    fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + startCity + '&appid=2c9dc6f2bedb657466b0cab93ce56dc6&units=metric')
       .then(response => response.json())
-      .then(weatherJSON => {
-        setWeather(weatherJSON);
-      });
+      .then(weatherJSON => setWeather(weatherJSON));
   }, []);
 
   useEffect(() => {
@@ -27,16 +30,36 @@ const App = () => {
     }
   }, [weather]);
 
+  const updateCity = (event) => {
+    if (event.key === 'Enter') {
+      fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + event.target.value + '&appid=2c9dc6f2bedb657466b0cab93ce56dc6&units=metric')
+        .then(response => response.json())
+        .then(weatherJSON => {
+          if (weatherJSON.cod === '404') {
+            setCityFound(false);
+          } else {
+            setCityFound(true);
+            setWeather(weatherJSON);
+          }
+          
+        });
+    }
+  }
+
   const timeNow = new Date();
 
   if (weather.list) {
     return (
       <div>
-        <h1 className='tc font-mw f-subheadline lh-title normal'>Weather forecast</h1>
+        <h1 className='tc font-mw f-subheadline lh-title normal'>Weather Forecast</h1>
         <h3 className='tc f4 lh-copy'>{city}</h3>
+        <SearchBox startCity={startCity} updateCity={updateCity}/>
+
+        {(!cityFound) && <h3 className='tc f4 lh-copy red'>City not found</h3>}
+
 
         <div className='flex flex-wrap justify-center'>
-        {(Date().getHours() > 12) && <Card day={Date().getDay()} temp={Math.round(weather.list[0].main.temp)-272} weather={weather.list[0].weather[0].main} />}
+        {(timeNow.getHours() > 12) && <Card day={-1} dayDate={timeNow.getDate()} temp={Math.round(weather.list[0].main.temp)} weather={weather.list[0].weather[0].main} />}
 
           {weather.list.filter((day) => {
             const time = new Date(day.dt_txt);
@@ -47,7 +70,8 @@ const App = () => {
             const today = new Date(thisDay.dt_txt);
             return <Card 
                     day={today.getDay()}
-                    temp={Math.round(thisDay.main.temp)-272}
+                    dayDate={today.getDate()}
+                    temp={Math.round(thisDay.main.temp)}
                     weather={thisDay.weather[0].main}
                     key={i}
                    />

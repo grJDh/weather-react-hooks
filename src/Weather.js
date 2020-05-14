@@ -50,8 +50,6 @@ const Weather = props => {
         return 'wi-owm-906';
       case 'strong-wind':
         return 'wi-owm-957';
-      case 'day-sunny':
-        return 'wi-owm-800';
       default:
         return 'wi-alien';
     }

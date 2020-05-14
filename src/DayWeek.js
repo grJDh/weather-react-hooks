@@ -19,13 +19,13 @@ const DayWeek = props => {
       case 0:
         return 'Sunday';
       default:
-        return 'Now';
+        return 'Today';
     }
   }
 
   return (
     <div>
-      <h2>{dayOfTheWeek()}</h2>
+      <h2>{dayOfTheWeek()}, {props.props.dayDate}</h2>
     </div>
   );
 }
