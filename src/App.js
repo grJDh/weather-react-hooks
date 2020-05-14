@@ -15,7 +15,7 @@ const App = () => {
   const [city, setCity] = useState('???');
 
   useEffect(() => {
-    fetch('http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=2c9dc6f2bedb657466b0cab93ce56dc6&lang=ru')
+    fetch('http://api.openweathermap.org/data/2.5/forecast?id=524901&appid=2c9dc6f2bedb657466b0cab93ce56dc6')
       .then(response => response.json())
       .then(weatherJSON => {
         setWeather(weatherJSON);
@@ -25,30 +25,36 @@ const App = () => {
   useEffect(() => {
     if (weather.city) {
       setCity(weather.city.name);
-        console.log(weather.list)
+      console.log(weather.list)
     }
   }, [weather]);
 
+  const now = new Date();
+
   if (weather.list) {
-    const today = new Date(weather.list[0].dt_txt);
     return (
       <div>
-        <h1 className='tc font-mw f-subheadline lh-title normal'>Прогноз погоды</h1>
+        <h1 className='tc font-mw f-subheadline lh-title normal'>Weather forecast</h1>
         <h3 className='tc f4 lh-copy'>{city}</h3>
-  
+
         <div className='flex flex-wrap justify-center'>
-          <TodayCard day={today.getDay()}
-                     minTemp={Math.round(weather.list[0].main.temp_min)-272}
-                     maxTemp={Math.round(weather.list[0].main.temp_max)-272}
-                     weather={weather.list[0].weather[0].main}
-          />
-        </div>
-  
-        {/* <div className='flex flex-wrap justify-center'>
-          {weather.list.map(thisDay => {
-            return <Card day={day} />
+        {(now.getHours() > 12) && <Card day={now.getDay()} temp={Math.round(weather.list[0].main.temp)-272} weather={weather.list[0].weather[0].main} />}
+
+          {weather.list.filter((day) => {
+            const time = new Date(day.dt_txt);
+            if ((time.getHours()) === 12) {
+              return day;
+            }
+          }).map((thisDay, i) => {
+            const today = new Date(thisDay.dt_txt);
+            return <Card 
+                    day={today.getDay()}
+                    temp={Math.round(thisDay.main.temp)-272}
+                    weather={thisDay.weather[0].main}
+                    key={i}
+                   />
           })}
-        </div> */}
+        </div>
       </div>
     );
   } else {

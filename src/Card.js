@@ -6,7 +6,7 @@ import DayWeek from './DayWeek';
 const Card = props => {
 
   return (
-    <div className='flex flex-column ma2 pa2 br3 justify-between w5 items-center bg-near-white grow pointer shadow-5 h5'>
+    <div className='flex flex-column ma2 pa2 br3 justify-between w5 items-center grow pointer bg-near-white shadow-5'>
       <DayWeek props={props}/>
       <Weather props={props}/>
     </div>
@@ -14,3 +14,5 @@ const Card = props => {
 }
 
 export default Card;
+
+// ${props.}
