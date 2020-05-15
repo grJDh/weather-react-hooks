@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Card from './Card';
 import SearchBox from './SearchBox';
+import CardHourly from './CardHourly';
 
 import './css/Card.css';
 import './font/Merriweather-Regular.ttf';
@@ -17,6 +18,8 @@ const App = () => {
   const startCity = 'Moscow';
 
   const [cityFound, setCityFound] = useState(true);
+
+  const [choosenDay, setChoosenDay] = useState(0);
 
   useEffect(() => {
     fetch('https://api.openweathermap.org/data/2.5/forecast?q=' + startCity + '&appid=2c9dc6f2bedb657466b0cab93ce56dc6&units=metric')
@@ -46,24 +49,36 @@ const App = () => {
     }
   }
 
+  const chooseDay = (day) => {
+    console.log(day);
+    setChoosenDay(day);
+  }
+
   const timeNow = new Date();
 
   if (weather.list) {
     return (
       <div>
-        <h1 className='tc font-mw f-subheadline lh-title normal'>Weather Forecast</h1>
+        <h1 className='tc font-mw f-subheadline-ns lh-title normal'>Weather Forecast</h1>
         <h3 className='tc f4 lh-copy'>{city}</h3>
         <SearchBox startCity={startCity} updateCity={updateCity}/>
 
         {(!cityFound) && <h3 className='tc f4 lh-copy red'>City not found</h3>}
 
-
         <div className='flex flex-wrap justify-center'>
-        {(timeNow.getHours() > 12) && <Card day={-1} dayDate={timeNow.getDate()} temp={Math.round(weather.list[0].main.temp)} weather={weather.list[0].weather[0].main} />}
+          {(timeNow.getHours() > 12) &&
+            <Card day={timeNow.getDay()}
+            dayDate={timeNow.getDate()}
+            temp={Math.round(weather.list[0].main.temp)}
+            weather={weather.list[0].weather[0].main}
+            chooseDay={chooseDay}
+            />
+          }
 
           {weather.list.filter((day) => {
             const time = new Date(day.dt_txt);
             if ((time.getHours()) === 12) {
+              console.log(day);
               return day;
             }
           }).map((thisDay, i) => {
@@ -73,9 +88,20 @@ const App = () => {
                     dayDate={today.getDate()}
                     temp={Math.round(thisDay.main.temp)}
                     weather={thisDay.weather[0].main}
+                    chooseDay={chooseDay}
                     key={i}
-                   />
+                  />
           })}
+
+          <CardHourly
+            choosenDay={choosenDay}
+            weatherHourly={weather.list.filter((entry) => {
+              const time = new Date(entry.dt_txt);
+              if ((time.getDate()) === choosenDay.dayDate) {
+                return entry;
+              }
+              })}
+          />
         </div>
       </div>
     );

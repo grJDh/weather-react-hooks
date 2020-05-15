@@ -3,7 +3,7 @@ import React from 'react';
 const Weather = props => {
 
   const weatherIcon = () => {
-    switch(props.props.weather.toLowerCase()) {
+    switch(props.weather.toLowerCase()) {
       case 'clouds':
           return 'wi-cloudy';
       case 'thunderstorm':
@@ -50,15 +50,18 @@ const Weather = props => {
         return 'wi-owm-906';
       case 'strong-wind':
         return 'wi-owm-957';
+      case 'clear':
+        return 'wi-day-sunny';
       default:
         return 'wi-alien';
     }
   }
 
   return (
-    <div className='flex justify-between flex-column items-center'>
-      <i className={`${weatherIcon()} wi f-headline ma2`}></i>
-      <h3>{props.props.temp}°</h3>
+    <div className='flex flex-column justify-between items-center'>
+      {((props.time) || (props.time === 0)) && <h2 className='tc f4 lh-copy'>{props.time}:00</h2>}
+      <i className={`${weatherIcon()} wi f-headline ma1`}></i>
+      <h3>{props.temp}°</h3>
     </div>
   );
 }

@@ -3,7 +3,11 @@ import React from 'react';
 const DayWeek = props => {
 
   const dayOfTheWeek = () => {
-    switch(props.props.day) {
+    const timeNow = new Date();
+
+    switch(props.day) {
+      case timeNow.getDay():
+        return 'Today';
       case 1:
         return 'Monday';
       case 2:
@@ -19,13 +23,15 @@ const DayWeek = props => {
       case 0:
         return 'Sunday';
       default:
-        return 'Today';
+        return '???';
     }
   }
 
+  console.log(props);
+
   return (
     <div>
-      <h2>{dayOfTheWeek()}, {props.props.dayDate}</h2>
+      <h2>{dayOfTheWeek()}, {props.dayDate}</h2>
     </div>
   );
 }
