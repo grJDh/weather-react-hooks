@@ -65,34 +65,35 @@ const App = () => {
 
         {(!cityFound) && <h3 className='tc f4 lh-copy red'>City not found</h3>}
 
-        <div className='flex flex-wrap justify-center'>
-          {(timeNow.getHours() > 12) &&
-            <Card day={timeNow.getDay()}
-            dayDate={timeNow.getDate()}
-            temp={Math.round(weather.list[0].main.temp)}
-            weather={weather.list[0].weather[0].main}
-            chooseDay={chooseDay}
-            />
-          }
-
-          {weather.list.filter((day) => {
-            const time = new Date(day.dt_txt);
-            if ((time.getHours()) === 12) {
-              console.log(day);
-              return day;
+        <div className='flex justify-center flex-column items-center'>
+          <div className='flex flex-wrap justify-center'>
+            {(timeNow.getHours() > 12) &&
+              <Card day={timeNow.getDay()}
+              dayDate={timeNow.getDate()}
+              temp={Math.round(weather.list[0].main.temp)}
+              weather={weather.list[0].weather[0].main}
+              chooseDay={chooseDay}
+              />
             }
-          }).map((thisDay, i) => {
-            const today = new Date(thisDay.dt_txt);
-            return <Card 
-                    day={today.getDay()}
-                    dayDate={today.getDate()}
-                    temp={Math.round(thisDay.main.temp)}
-                    weather={thisDay.weather[0].main}
-                    chooseDay={chooseDay}
-                    key={i}
-                  />
-          })}
 
+            {weather.list.filter((day) => {
+              const time = new Date(day.dt_txt);
+              if ((time.getHours()) === 12) {
+                console.log(day);
+                return day;
+              }
+            }).map((thisDay, i) => {
+              const today = new Date(thisDay.dt_txt);
+              return <Card 
+                      day={today.getDay()}
+                      dayDate={today.getDate()}
+                      temp={Math.round(thisDay.main.temp)}
+                      weather={thisDay.weather[0].main}
+                      chooseDay={chooseDay}
+                      key={i}
+                    />
+            })}
+          </div>
           <CardHourly
             choosenDay={choosenDay}
             weatherHourly={weather.list.filter((entry) => {
